@@ -19,12 +19,41 @@ export class EscrowManager {
   constructor(config: EscrowConfig) {
     // Use Solana mainnet-beta or devnet
     this.connection = new Connection(config.rpcUrl, 'confirmed');
-    this.platformWallet = new PublicKey(config.platformWallet);
+    
+    // Handle platform wallet initialization safely
+    try {
+      if (config.platformWallet) {
+        this.platformWallet = new PublicKey(config.platformWallet);
+      } else {
+        // Dummy wallet for build time
+        this.platformWallet = new PublicKey('11111111111111111111111111111111');
+      }
+    } catch (error) {
+      // Fallback to system program ID if invalid
+      this.platformWallet = new PublicKey('11111111111111111111111111111111');
+    }
     
     // Initialize keypair from env if available (for signing transactions)
     if (process.env.PLATFORM_WALLET_PRIVATE_KEY) {
-      const privateKeyArray = JSON.parse(process.env.PLATFORM_WALLET_PRIVATE_KEY);
-      this.platformKeypair = Keypair.fromSecretKey(new Uint8Array(privateKeyArray));
+      try {
+        const privateKey = process.env.PLATFORM_WALLET_PRIVATE_KEY;
+        let privateKeyArray: number[];
+        
+        // Check if it's Base64 encoded or JSON array
+        if (privateKey.startsWith('[')) {
+          // JSON array format
+          privateKeyArray = JSON.parse(privateKey);
+        } else {
+          // Base64 format (default)
+          const decoded = Buffer.from(privateKey, 'base64');
+          privateKeyArray = Array.from(decoded);
+        }
+        
+        this.platformKeypair = Keypair.fromSecretKey(new Uint8Array(privateKeyArray));
+      } catch (error) {
+        console.error('Failed to initialize platform keypair:', error);
+        // Don't throw during build time - keypair is only needed at runtime for transactions
+      }
     }
   }
 

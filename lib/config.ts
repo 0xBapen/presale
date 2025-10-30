@@ -20,11 +20,11 @@ export const PLATFORM_CONFIG = {
   PAYMENT_TOKEN: process.env.PAYMENT_TOKEN || 'USDC',
   
   // Platform wallet for fees and escrow (Solana)
-  PLATFORM_WALLET: process.env.PLATFORM_WALLET_ADDRESS || '',
+  PLATFORM_WALLET: process.env.PLATFORM_WALLET_ADDRESS || process.env.NEXT_PUBLIC_PLATFORM_WALLET_ADDRESS || '',
   
   // Solana RPC
-  RPC_URL: process.env.RPC_URL || 'https://api.mainnet-beta.solana.com',
-  NETWORK: process.env.NETWORK || 'mainnet-beta',
+  RPC_URL: process.env.RPC_URL || process.env.NEXT_PUBLIC_RPC_URL || 'https://api.mainnet-beta.solana.com',
+  NETWORK: process.env.NETWORK || process.env.NEXT_PUBLIC_NETWORK || 'mainnet-beta',
 };
 
 export default PLATFORM_CONFIG;

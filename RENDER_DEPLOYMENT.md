@@ -99,7 +99,7 @@ Click **"Add Environment Variable"** and add each of these:
 | `NEXT_PUBLIC_NETWORK` | `mainnet-beta` | Solana network |
 | `NEXT_PUBLIC_RPC_URL` | `https://api.mainnet-beta.solana.com` | Solana RPC endpoint |
 | `NEXT_PUBLIC_ADMIN_PASSWORD` | `your-secure-password` | Admin panel password |
-| `PLATFORM_WALLET_PRIVATE_KEY` | Your Base64 wallet key | Platform escrow wallet |
+| `PLATFORM_WALLET_PRIVATE_KEY` | Your Base64 wallet key | Platform escrow wallet (Base64 format) |
 | `NEXT_PUBLIC_PLATFORM_WALLET_ADDRESS` | Your wallet public key | Platform wallet address |
 
 ### Optional Variables (for production):
@@ -126,6 +126,8 @@ NEXT_PUBLIC_RPC_URL=https://api.mainnet-beta.solana.com
 NEXT_PUBLIC_ADMIN_PASSWORD=your-secure-admin-password
 
 # Platform Wallet (from wallets/platform-wallet-base64.txt)
+# IMPORTANT: Use the Base64 string (single line, no quotes)
+# Should look like: aFN2/471ngK8x9w...
 PLATFORM_WALLET_PRIVATE_KEY=your-base64-private-key-here
 NEXT_PUBLIC_PLATFORM_WALLET_ADDRESS=YourPublicKeyHere123456789
 
