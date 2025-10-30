@@ -1,0 +1,42 @@
+# Render Blueprint for x402 Presale Platform
+# This file enables one-click deployment on Render
+# Learn more: https://render.com/docs/blueprint-spec
+
+services:
+  # Main Web Service
+  - type: web
+    name: x402-presale-platform
+    runtime: node
+    plan: free  # Change to 'starter' for production ($7/month)
+    region: oregon  # Change to your preferred region
+    branch: main
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_NETWORK
+        value: mainnet-beta
+      - key: NEXT_PUBLIC_RPC_URL
+        value: https://api.mainnet-beta.solana.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: presale-platform-db
+          property: connectionString
+      # IMPORTANT: Set these secrets in Render Dashboard manually:
+      # - NEXT_PUBLIC_ADMIN_PASSWORD
+      # - PLATFORM_WALLET_PRIVATE_KEY
+      # - NEXT_PUBLIC_PLATFORM_WALLET_ADDRESS
+
+# Database
+databases:
+  - name: presale-platform-db
+    plan: free  # Change to 'starter' for production ($7/month)
+    databaseName: presale_platform
+    user: presale_user
+    region: oregon  # Same region as web service for best performance
+
+# Note: After initial deployment, run this in Render Shell:
+# npx prisma db push
+

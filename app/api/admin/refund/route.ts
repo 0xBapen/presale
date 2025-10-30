@@ -41,7 +41,6 @@ export async function POST(request: NextRequest) {
     const result = await escrowManager.refundInvestors(presaleId);
 
     return NextResponse.json({
-      success: true,
       ...result,
       message: `Refunded ${result.refundCount} investors, total: $${result.totalRefunded}`,
     });

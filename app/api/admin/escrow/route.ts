@@ -71,10 +71,7 @@ export async function POST(request: NextRequest) {
     // Release funds
     const result = await escrowManager.releaseFunds(presaleId, milestoneId);
 
-    return NextResponse.json({
-      success: true,
-      ...result,
-    });
+    return NextResponse.json(result);
   } catch (error: any) {
     console.error('Failed to release funds:', error);
     return NextResponse.json(
