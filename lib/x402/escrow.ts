@@ -167,7 +167,7 @@ export class EscrowManager {
       return {
         success: true,
         transactionHash: signature,
-        amountReleased,
+        amountReleased: amountToRelease,
       };
     } catch (error) {
       console.error('Failed to release funds:', error);
