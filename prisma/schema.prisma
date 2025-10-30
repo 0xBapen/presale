@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PresaleStatus {
+  DRAFT
+  ACTIVE
+  FUNDED
+  FAILED
+  COMPLETED
+  CANCELLED
+}
+
+enum InvestmentStatus {
+  PENDING
+  CONFIRMED
+  REFUNDED
+  CLAIMED
+}
+
+enum TokenomicsType {
+  FAIR_LAUNCH
+  VESTED
+  LINEAR_UNLOCK
+  CLIFF_UNLOCK
+}
+
+model Presale {
+  id                String        @id @default(cuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  // Project Info
+  projectName       String
+  ticker            String
+  description       String        @db.Text
+  pitchDeck         String?       // URL to pitch deck
+  website           String?
+  twitter           String?
+  discord           String?
+  telegram          String?
+  
+  // Team Info
+  teamName          String
+  teamDescription   String?       @db.Text
+  teamWallet        String        // Wallet address to receive funds
+  
+  // Presale Details
+  status            PresaleStatus @default(DRAFT)
+  targetAmount      Float         // In USD or token amount
+  minInvestment     Float         @default(10)
+  maxInvestment     Float?        // Optional cap per wallet
+  softCap           Float?        // Minimum to succeed
+  hardCap           Float         // Maximum target
+  
+  // Tokenomics
+  tokenomicsType    TokenomicsType @default(FAIR_LAUNCH)
+  totalSupply       String        // BigInt as string
+  presaleAllocation Float         // Percentage for presale
+  liquidityAllocation Float?      // Percentage for liquidity
+  teamAllocation    Float?        // Percentage for team
+  vestingPeriod     Int?          // In days
+  cliffPeriod       Int?          // In days before vesting starts
+  
+  // Timing
+  startDate         DateTime
+  endDate           DateTime
+  
+  // Token Info (if existing)
+  tokenAddress      String?
+  tokenDecimals     Int           @default(9)
+  
+  // Escrow Info
+  escrowWallet      String?       // Platform escrow wallet for this presale
+  currentRaised     Float         @default(0)
+  investorCount     Int           @default(0)
+  
+  // Milestones (for phased release)
+  milestones        Milestone[]
+  
+  // Investments
+  investments       Investment[]
+  
+  // Metadata
+  featured          Boolean       @default(false)
+  verified          Boolean       @default(false)
+  tags              String[]      @default([])
+  
+  @@index([status])
+  @@index([startDate, endDate])
+  @@index([featured])
+}
+
+model Milestone {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  
+  presaleId   String
+  presale     Presale  @relation(fields: [presaleId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String   @db.Text
+  percentage  Float    // Percentage of funds to release
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  
+  order       Int      // Order of milestone
+  
+  @@index([presaleId])
+}
+
+model Investment {
+  id              String           @id @default(cuid())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  presaleId       String
+  presale         Presale          @relation(fields: [presaleId], references: [id], onDelete: Cascade)
+  
+  investorWallet  String
+  amount          Float            // Amount invested in USD/USDC
+  tokenAmount     String?          // Amount of tokens allocated (BigInt as string)
+  
+  status          InvestmentStatus @default(PENDING)
+  
+  // x402 Payment Info
+  transactionHash String?          @unique
+  x402PaymentId   String?          @unique
+  
+  // Refund/Claim Info
+  refundedAt      DateTime?
+  refundTxHash    String?
+  claimedAt       DateTime?
+  claimTxHash     String?
+  
+  @@index([presaleId])
+  @@index([investorWallet])
+  @@index([status])
+  @@unique([presaleId, investorWallet])
+}
+
+model EscrowTransaction {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  
+  presaleId       String
+  type            String   // CREATION_FEE, DEPOSIT, RELEASE, REFUND
+  amount          Float
+  fromWallet      String
+  toWallet        String
+  transactionHash String   @unique
+  
+  @@index([presaleId])
+  @@index([transactionHash])
+}
+
+model PlatformSettings {
+  id                String   @id @default(cuid())
+  updatedAt         DateTime @updatedAt
+  
+  escrowFeePercent  Float    @default(2.5) // Platform fee percentage
+  minPresaleAmount  Float    @default(1000)
+  maxPresaleAmount  Float    @default(1000000)
+  
+  // x402 Configuration
+  facilitatorUrl    String
+  paymentNetwork    String   @default("base")
+  paymentToken      String   @default("USDC")
+}
+
