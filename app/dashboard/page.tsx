@@ -41,14 +41,6 @@ export default function DashboardPage() {
     }
   }, [connected, publicKey]);
 
-  const connectWallet = () => {
-    // Simulate wallet connection
-    const mockAddress = '0x' + Math.random().toString(16).slice(2, 42);
-    setWalletConnected(true);
-    setWalletAddress(mockAddress);
-    localStorage.setItem('walletAddress', mockAddress);
-  };
-
   const fetchInvestments = async (wallet: string) => {
     setLoading(true);
     try {
