@@ -106,7 +106,8 @@ export class TwoWayEscrowManager {
       const tokensDeposited = tokenBalance >= requiredTokens;
 
       // Update presale status based on token deposit
-      if (tokensDeposited && presale.status === 'PENDING') {
+      // Change from DRAFT to ACTIVE when tokens are deposited
+      if (tokensDeposited && presale.status === 'DRAFT') {
         await prisma.presale.update({
           where: { id: presaleId },
           data: { status: 'ACTIVE' }, // Auto-approve once tokens deposited
