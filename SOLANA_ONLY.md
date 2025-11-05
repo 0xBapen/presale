@@ -235,3 +235,9 @@ solana balance <address> --url mainnet-beta
 
 🚀 **Built exclusively for Solana - the fastest blockchain!**
 
+
+
+
+
+
+

@@ -1,38 +1,59 @@
-# x402 Presale Platform
+# QuantumRaise - Secure Token Presale Platform
 
-A decentralized presale platform powered by the [x402 payment protocol](https://docs.cdp.coinbase.com/x402/welcome) that acts as an escrow between presale investors and development teams.
+![QuantumRaise](public/images/logo-banner.jpg)
+
+**QuantumRaise** is the ultimate secure presale platform built on Solana, featuring quantum-inspired design and cutting-edge x402 escrow integration.
 
 ## 🚀 Features
 
-- **Secure Escrow**: Platform holds funds in escrow using x402 protocol until conditions are met
-- **Milestone-Based Releases**: Release funds in phases as projects complete milestones
-- **Transparent**: All transactions on-chain with real-time tracking
-- **Instant Payments**: x402 enables instant, automatic stablecoin payments over HTTP
-- **Fair Launch**: Customizable investment limits per wallet
-- **Refund Protection**: Automatic refunds if presale fails to reach soft cap
-- **Admin Dashboard**: Complete presale management and oversight
+- **Secure x402 Escrow** - Automated two-way escrow protecting both investors and developers
+- **Solana Mainnet** - Lightning-fast transactions with minimal fees
+- **Automated Distribution** - Tokens distributed automatically when presale succeeds
+- **Full Transparency** - All transactions on-chain and verifiable
+- **No Manual Claims** - Investors receive tokens directly to their wallets
+- **Built-in Refunds** - Automatic USDC refunds if presale fails
 
-## 🏗️ Tech Stack
+## 🎯 How It Works
+
+### For Developers
+
+1. **Create Token** - Create your SPL token on pump.fun, raydium.io, or via Solana CLI
+2. **Launch Presale** - Fill out the presale form and pay $100 USDC creation fee
+3. **Deposit Tokens** - Send your tokens to the escrow address
+4. **Presale Goes Live** - Platform automatically approves when tokens detected
+5. **Receive USDC** - Funds automatically sent to your wallet when presale succeeds
+
+### For Investors
+
+1. **Browse Presales** - Explore active presales on the platform
+2. **Research Projects** - Review tokenomics, team info, and milestones
+3. **Invest USDC** - Connect wallet and invest via x402 protocol
+4. **Receive Tokens** - Tokens automatically sent to your wallet when presale ends
+5. **No Manual Claims** - Everything happens automatically!
+
+## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14, React, TailwindCSS
-- **Backend**: Next.js API Routes
-- **Database**: PostgreSQL with Prisma ORM
-- **Blockchain**: Solana Mainnet
-- **Payment Protocol**: x402 via facilitator.payai.network
-- **Escrow**: Platform-controlled Solana wallet
+- **Backend**: Next.js API Routes, Prisma ORM
+- **Blockchain**: Solana Web3.js, SPL Token, Solana Wallet Adapter
+- **Database**: PostgreSQL (Supabase recommended)
+- **Payment**: x402 Protocol via facilitator.payai.network
+- **Escrow**: Custom two-way escrow smart contract logic
+- **Automation**: Cron jobs for automated execution
 
-## 📋 Prerequisites
+## 📦 Installation
 
-- Node.js 18+ and npm
-- PostgreSQL database
-- Solana mainnet wallet (for platform escrow)
-- SOL for transaction fees
-- No x402 API key required (using facilitator.payai.network)
+### Prerequisites
 
-## 🛠️ Installation
+- Node.js 18+
+- PostgreSQL database (Supabase recommended)
+- Solana wallet with USDC
+
+### Setup
 
 1. **Clone the repository**
 ```bash
+git clone <your-repo>
 cd presale-platform
 ```
 
@@ -41,214 +62,161 @@ cd presale-platform
 npm install
 ```
 
-3. **Set up environment variables**
+3. **Configure environment variables**
 
-Create a `.env` file in the root directory:
+Create `.env.local`:
 
 ```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/presale_platform"
+# Database (Use Supabase Connection Pooling string)
+DATABASE_URL="postgresql://postgres.xxx:password@aws-0-region.pooler.supabase.com:6543/postgres?pgbouncer=true"
 
-# Solana Network (use mainnet-beta for production)
-NETWORK="mainnet-beta"
-RPC_URL="https://api.mainnet-beta.solana.com"
+# Solana
+NEXT_PUBLIC_NETWORK=mainnet-beta
+NEXT_PUBLIC_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
+RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
 
-# Platform Wallet (Escrow)
-PLATFORM_WALLET_PRIVATE_KEY="[your-private-key-array]"
-PLATFORM_WALLET_ADDRESS="your-wallet-address"
+# Platform Wallet
+PLATFORM_WALLET_ADDRESS=YourPlatformWalletPublicKey
+PLATFORM_WALLET_PRIVATE_KEY=Base64EncodedPrivateKey
 
-# x402 Configuration (Solana)
-X402_FACILITATOR_URL="https://facilitator.payai.network"
-PAYMENT_NETWORK="solana"
-PAYMENT_TOKEN="USDC"
+# x402 Configuration
+X402_FACILITATOR_URL=https://facilitator.payai.network
 
-# Admin Authentication
-ADMIN_PASSWORD="your-secure-password"
-JWT_SECRET="your-jwt-secret"
+# Admin
+NEXT_PUBLIC_ADMIN_PASSWORD=your_secure_password
 
-# Next.js
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-NEXT_PUBLIC_NETWORK="mainnet-beta"
+# Optional
+FEE_PERCENTAGE=2.5
 ```
 
-4. **Set up the database**
+4. **Generate platform wallet**
 ```bash
-npx prisma generate
+node scripts/generate-wallet.js
+```
+
+5. **Setup database**
+```bash
 npx prisma db push
 ```
 
-5. **Run the development server**
+6. **Run development server**
 ```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see your presale platform!
+Visit `http://localhost:3000`
 
-## 📖 How It Works
+## 🚀 Deployment (Render)
 
-### For Project Teams (Sellers)
-
-1. **Create Presale**: Fill out project details, tokenomics, and funding goals
-2. **Set Milestones**: Define milestones for phased fund releases (optional)
-3. **Get Approved**: Platform reviews and activates presale
-4. **Receive Funds**: Funds released from escrow as milestones are completed
-
-### For Investors (Buyers)
-
-1. **Browse Presales**: Explore active token presales
-2. **Invest**: Use x402 to pay instantly with USDC
-3. **Track Progress**: Monitor presale progress in real-time
-4. **Claim Tokens**: Receive tokens when presale completes
-5. **Get Refunds**: Automatic refunds if presale fails
-
-### x402 Escrow Flow
-
-1. Investor initiates investment → receives 402 Payment Required
-2. Investor completes x402 payment → funds go to platform escrow
-3. Platform verifies payment through x402 facilitator
-4. Funds held in escrow until presale succeeds or fails
-5. Success → funds released to team based on milestones
-6. Failure → automatic refunds to all investors
-
-## 🔐 Security Features
-
-- **Escrow Protection**: Funds never go directly to project teams
-- **x402 Verification**: All payments verified through facilitator
-- **Milestone Gating**: Funds released incrementally
-- **Soft Cap Protection**: Refunds if minimum not reached
-- **Admin Oversight**: Platform reviews all presales
-- **On-Chain Transparency**: All transactions verifiable
-
-## 🎯 API Endpoints
-
-### Presales
-
-- `GET /api/presales` - List presales
-- `POST /api/presales` - Create presale
-- `GET /api/presales/[id]` - Get presale details
-- `PATCH /api/presales/[id]` - Update presale (admin)
-
-### Investments
-
-- `POST /api/presales/[id]/invest` - Initiate investment (returns 402)
-- `POST /api/presales/[id]/invest` - Verify payment
-- `GET /api/presales/[id]/invest?wallet=` - Get investment status
-
-### Admin
-
-- Admin dashboard at `/admin` (password protected)
-- Presale approval and management
-- Escrow fund monitoring
-
-## 🔄 Presale Lifecycle
-
-```
-DRAFT → ACTIVE → FUNDED → COMPLETED
-         ↓
-       FAILED (refunds issued)
-```
-
-- **DRAFT**: Awaiting admin approval
-- **ACTIVE**: Accepting investments
-- **FUNDED**: Target reached, awaiting completion
-- **COMPLETED**: Project delivered, tokens distributed
-- **FAILED**: Did not reach soft cap, refunds processed
-
-## 💰 Platform Fees
-
-- Default: 2.5% of total raised
-- Collected when funds are released from escrow
-- Configurable in `PlatformSettings`
-
-## 🧪 Testing
-
+1. **Push to GitHub**
 ```bash
-npm run test
+git add .
+git commit -m "Initial commit"
+git push origin main
 ```
 
-## 📦 Production Deployment
+2. **Create Web Service on Render**
+   - Connect GitHub repository
+   - Build command: `npm install && npx prisma generate && npm run build`
+   - Start command: `npm start`
+   - Add all environment variables
 
-### Database Setup
+3. **Create Cron Job on Render**
+   - Name: `presale-checker`
+   - Command: `curl https://your-app.onrender.com/api/cron/check-presales`
+   - Schedule: `0 * * * *` (every hour)
 
-1. Create production PostgreSQL database
-2. Run migrations: `npx prisma migrate deploy`
+4. **Deploy!**
 
-### Platform Wallet
+## 📁 Project Structure
 
-1. Generate secure wallet for escrow
-2. Fund with SOL/ETH for transaction fees
-3. Store private key securely (use secrets manager)
+```
+presale-platform/
+├── app/
+│   ├── components/          # React components
+│   │   ├── NavBar.tsx      # Navigation with QuantumRaise branding
+│   │   ├── PresaleCard.tsx # Presale display card
+│   │   ├── Toast.tsx       # Toast notifications
+│   │   └── WalletButton.tsx # Wallet connection
+│   ├── create/             # Presale creation page
+│   ├── presales/           # Presale browsing and details
+│   │   └── [id]/
+│   │       ├── page.tsx    # Presale detail page
+│   │       └── deposit/    # Token deposit page
+│   ├── dashboard/          # Investor dashboard
+│   ├── admin/              # Admin panel
+│   └── api/                # API routes
+│       ├── presales/       # Presale CRUD
+│       ├── admin/          # Admin operations
+│       └── cron/           # Automated tasks
+├── lib/
+│   ├── escrow/
+│   │   └── two-way-escrow.ts  # Main escrow logic
+│   ├── token/
+│   │   ├── distribution.ts     # Token distribution
+│   │   └── token-factory.ts    # Token creation (optional)
+│   └── x402/
+│       ├── client.ts           # x402 integration
+│       └── escrow.ts           # USDC escrow
+├── prisma/
+│   └── schema.prisma       # Database schema
+└── public/
+    └── images/             # QuantumRaise logos
+```
 
-### x402 Setup
+## 🎨 Branding
 
-1. Sign up at [Coinbase Developer Platform](https://portal.cdp.coinbase.com/)
-2. Get x402 API credentials
-3. Configure facilitator URL and network
+**QuantumRaise** features a stunning quantum-inspired design:
 
-### Environment
+- **Logo**: Network sphere with orbital rings (cyan to pink gradient)
+- **Color Palette**: Cyan (#00F0FF), Blue (#0066FF), Purple (#9D00FF), Pink (#FF00FF)
+- **Typography**: Bold, modern, gradient text effects
+- **UI**: Glassmorphism, animated backgrounds, smooth transitions
 
-- Set all production environment variables
-- Use strong admin password
-- Enable HTTPS
-- Set up monitoring and alerts
+## 💰 Platform Economics
 
-## 🛡️ Admin Panel
+### Revenue Model
 
-Access at `/admin` with admin password.
+- **Presale Creation Fee**: $100 USDC (one-time)
+- **Success Fee**: 2.5% of funds raised
 
-Features:
-- View all presales and statistics
-- Approve/reject presales
-- Update presale status
-- Feature presales
-- Monitor escrow balances
-- Manage platform settings
+### Example
+```
+Presale raises $100,000:
+- Creation fee: $100
+- Success fee: $2,500 (2.5%)
+- Total platform revenue: $2,600
+- Dev team receives: $97,500
+```
 
-## 📚 Resources
+## 🔒 Security Features
 
-**x402 Protocol:**
-- [x402 Documentation](https://docs.cdp.coinbase.com/x402/welcome)
-- [facilitator.payai.network](https://facilitator.payai.network) - No API key required
+- **Two-Way Escrow**: Both USDC and tokens held in escrow
+- **Automated Execution**: No manual intervention required
+- **On-Chain Verification**: All transactions verifiable on Solana
+- **Automatic Refunds**: Full refunds if presale fails
+- **Time-Locked**: Funds released only when conditions met
 
-**Solana:**
-- [Solana Documentation](https://docs.solana.com/)
-- [Solana Mainnet Explorer (Solscan)](https://solscan.io/)
-- [Solana Web3.js Guide](https://solana-labs.github.io/solana-web3.js/)
+## 📚 Documentation
 
-**Development:**
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs)
+- [Setup Guide](SETUP.md)
+- [Production Automation](PRODUCTION_AUTOMATION_GUIDE.md)
+- [Option 1: External Tokens](OPTION_1_PRODUCTION_READY.md)
+- [Token Distribution](TOKEN_DISTRIBUTION_GUIDE.md)
+- [Deployment](DEPLOYMENT_SUMMARY.md)
+- [Admin Panel](ADMIN_PANEL_GUIDE.md)
 
-## 🤝 Contributing
+## 🤝 Support
 
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+For questions or issues:
+- Check documentation in the root folder
+- Review the guides (`.md` files)
+- Open an issue on GitHub
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
-
-## 🆘 Support
-
-For issues or questions:
-- Open a GitHub issue
-- Contact platform admin
-- Join [CDP Discord](https://discord.gg/cdp)
-
-## 🎉 What's Next?
-
-- [ ] Multi-chain support (Ethereum, Polygon, etc.)
-- [ ] Advanced tokenomics options
-- [ ] KYC/AML integration
-- [ ] Token vesting contracts
-- [ ] DAO governance for presale approvals
-- [ ] Mobile app
+MIT License - See [LICENSE](LICENSE) file
 
 ---
 
-Built with ❤️ using [x402 Payment Protocol](https://docs.cdp.coinbase.com/x402/welcome)
-
+**QuantumRaise** - Raising the future of blockchain, one presale at a time. 🚀

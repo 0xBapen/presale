@@ -77,6 +77,7 @@ model Presale {
   // Token Info (if existing)
   tokenAddress      String?
   tokenDecimals     Int           @default(9)
+  tokenPrice        Float?        // Price per token in USD
   
   // Escrow Info
   escrowWallet      String?       // Platform escrow wallet for this presale
@@ -118,22 +119,22 @@ model Milestone {
 }
 
 model Investment {
-  id              String           @id @default(cuid())
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id              String              @id @default(cuid())
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
   
   presaleId       String
-  presale         Presale          @relation(fields: [presaleId], references: [id], onDelete: Cascade)
+  presale         Presale             @relation(fields: [presaleId], references: [id], onDelete: Cascade)
   
   investorWallet  String
-  amount          Float            // Amount invested in USD/USDC
-  tokenAmount     String?          // Amount of tokens allocated (BigInt as string)
+  amount          Float               // Amount invested in USD/USDC
+  tokenAmount     String?             // Amount of tokens allocated (BigInt as string)
   
-  status          InvestmentStatus @default(PENDING)
+  status          InvestmentStatus    @default(PENDING)
   
   // x402 Payment Info
-  transactionHash String?          @unique
-  x402PaymentId   String?          @unique
+  transactionHash String?             @unique
+  x402PaymentId   String?             @unique
   
   // Refund/Claim Info
   refundedAt      DateTime?
@@ -141,10 +142,27 @@ model Investment {
   claimedAt       DateTime?
   claimTxHash     String?
   
+  // Token Distribution
+  distribution    TokenDistribution?
+  
   @@index([presaleId])
   @@index([investorWallet])
   @@index([status])
   @@unique([presaleId, investorWallet])
+}
+
+model TokenDistribution {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  
+  investmentId    String   @unique
+  investment      Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  
+  tokenAmount     Float    // Number of tokens distributed
+  transactionHash String   @unique
+  
+  @@index([investmentId])
+  @@index([transactionHash])
 }
 
 model EscrowTransaction {

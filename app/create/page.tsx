@@ -46,6 +46,11 @@ export default function CreatePresalePage() {
     startDate: '',
     endDate: '',
     
+    // Token Information
+    tokenAddress: '',
+    tokenDecimals: '9',
+    tokenPrice: '',
+    
     // Tokenomics
     tokenomicsType: 'FAIR_LAUNCH',
     totalSupply: '',
@@ -54,8 +59,6 @@ export default function CreatePresalePage() {
     teamAllocation: '',
     vestingPeriod: '',
     cliffPeriod: '',
-    tokenAddress: '',
-    tokenDecimals: '9',
     
     // Milestones
     milestones: [
@@ -215,9 +218,11 @@ export default function CreatePresalePage() {
     <div className="min-h-screen bg-black">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Launch Your Presale</h1>
+          <h1 className="text-4xl font-bold mb-2">
+            Launch Your <span className="gradient-text">Presale</span>
+          </h1>
           <p className="text-gray-400 mb-4">
-            Create a token presale with secure x402 escrow
+            Create a token presale with secure x402 escrow on QuantumRaise
           </p>
           
           {/* Creation Fee Notice */}
@@ -279,7 +284,10 @@ export default function CreatePresalePage() {
         <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-8">
           {step === 1 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold mb-4">Project Information</h2>
+              <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+                <Rocket className="text-purple-400" />
+                Project Information
+              </h2>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -511,7 +519,88 @@ export default function CreatePresalePage() {
 
           {step === 3 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold mb-4">Tokenomics</h2>
+              <h2 className="text-2xl font-bold mb-4 flex items-center gap-3">
+                <Package className="text-purple-400" />
+                Token & Tokenomics
+              </h2>
+
+              {/* Token Information Section */}
+              <div className="p-6 rounded-xl bg-blue-500/5 border border-blue-500/30 mb-6">
+                <h3 className="text-lg font-bold mb-4 text-blue-200">📝 Token Information (Required)</h3>
+                
+                <div className="mb-4 p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                  <p className="text-sm text-blue-100 mb-3">
+                    <strong>Before creating your presale:</strong> Create your token on one of these platforms:
+                  </p>
+                  <ul className="text-sm text-blue-100 space-y-1 ml-4">
+                    <li>• <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">pump.fun</a> - Easiest token creation</li>
+                    <li>• <a href="https://raydium.io" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline">raydium.io</a> - Create with liquidity pool</li>
+                    <li>• Solana CLI - For advanced users</li>
+                  </ul>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-gray-300 mb-2">Token Mint Address *</label>
+                    <input
+                      type="text"
+                      name="tokenAddress"
+                      value={formData.tokenAddress}
+                      onChange={handleChange}
+                      placeholder="e.g., ABC123...xyz"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:border-purple-500 focus:outline-none"
+                      required
+                    />
+                    <p className="text-xs text-gray-400 mt-1">
+                      Your SPL token mint address from Solana
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-300 mb-2">Token Decimals *</label>
+                    <input
+                      type="number"
+                      name="tokenDecimals"
+                      value={formData.tokenDecimals}
+                      onChange={handleChange}
+                      placeholder="9"
+                      min="0"
+                      max="18"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:border-purple-500 focus:outline-none"
+                      required
+                    />
+                    <p className="text-xs text-gray-400 mt-1">
+                      Usually 9 for Solana tokens
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-sm text-gray-300 mb-2">Token Price (USD) *</label>
+                  <input
+                    type="number"
+                    name="tokenPrice"
+                    value={formData.tokenPrice}
+                    onChange={handleChange}
+                    placeholder="0.10"
+                    step="0.000001"
+                    min="0"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:border-purple-500 focus:outline-none"
+                    required
+                  />
+                  <p className="text-xs text-gray-400 mt-1">
+                    Price per token in USD (e.g., $0.10 = investors pay $10 for 100 tokens)
+                  </p>
+                </div>
+
+                <div className="mt-4 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
+                  <p className="text-sm text-yellow-200">
+                    ⚠️ <strong>Important:</strong> After creating this presale, you'll need to deposit your tokens to our escrow address before your presale goes live.
+                  </p>
+                </div>
+              </div>
+
+              <h3 className="text-lg font-bold mt-8 mb-4 text-gray-300">Tokenomics (Optional)</h3>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <div>

@@ -58,3 +58,9 @@ console.log(`   solana airdrop 2 ${publicKey} --url devnet\n`);
 console.log('For mainnet, send SOL/ETH from your exchange or wallet');
 console.log('\n========================================\n');
 
+
+
+
+
+
+

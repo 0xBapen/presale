@@ -1,320 +1,253 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { Rocket, Shield, Zap, TrendingUp, Users, Lock } from 'lucide-react';
 import Link from 'next/link';
-
-interface Presale {
-  id: string;
-  projectName: string;
-  ticker: string;
-  description: string;
-  hardCap: number;
-  currentRaised: number;
-  endDate: string;
-  status: string;
-  featured: boolean;
-}
+import { Zap, Shield, Coins, TrendingUp, Users, Lock, Rocket, Globe, ChevronRight, Star, Award } from 'lucide-react';
 
 export default function HomePage() {
-  const [featuredPresales, setFeaturedPresales] = useState<Presale[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchFeaturedPresales();
-  }, []);
-
-  const fetchFeaturedPresales = async () => {
-    try {
-      const response = await fetch('/api/presales?featured=true&limit=3');
-      const data = await response.json();
-      setFeaturedPresales(data.presales || []);
-    } catch (error) {
-      console.error('Failed to fetch featured presales:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-black"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <div className="mb-4 inline-flex items-center px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500">
-              <span className="text-purple-400 font-semibold">⚡ Powered by Solana • x402 Protocol</span>
+    <div className="min-h-screen bg-black relative">
+      {/* Hero Section - Nexchain Style */}
+      <section className="relative pt-20 pb-32 overflow-hidden">
+        {/* Gradient orbs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" style={{ animationDelay: '3s' }}></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12 animate-fade-in">
+            {/* Logo Banner */}
+            <div className="mb-8">
+              <img 
+                src="/images/logo-banner.jpg" 
+                alt="QuantumRaise"
+                className="mx-auto h-24 object-contain"
+              />
             </div>
-            <h1 className="text-6xl font-bold mb-6">
-              <span className="gradient-bg bg-clip-text text-transparent">
-                Launch Your Token Presale
-              </span>
-              <br />
-              <span className="text-white">On Solana with x402 Escrow</span>
+            
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 mb-6">
+              <Star className="w-4 h-4 text-purple-400" />
+              <span className="text-purple-300 text-sm font-medium">Platform is Live</span>
+            </div>
+            
+            <h1 className="text-6xl md:text-7xl font-bold mb-6">
+              <span className="gradient-text">QuantumRaise</span>
             </h1>
-            <p className="text-xl text-gray-400 mb-8 max-w-3xl mx-auto">
-              Secure, transparent, and decentralized token presales powered by the x402 payment protocol on Solana.
-              Platform acts as escrow between investors and project teams.
+            
+            <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto">
+              The Ultimate Secure Presale Platform on Solana
             </p>
-            <div className="flex gap-4 justify-center mb-6">
+            
+            <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
+              Launch your token presale with secure x402 escrow integration. Built on Solana for lightning-fast, transparent, and trustless fundraising.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link
                 href="/presales"
-                className="px-8 py-4 rounded-lg gradient-bg hover:opacity-90 transition text-lg font-semibold"
+                className="group px-8 py-4 rounded-xl gradient-bg text-white font-semibold text-lg hover:opacity-90 transition flex items-center justify-center gap-2 btn-glow"
               >
                 Browse Presales
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition" />
               </Link>
               <Link
                 href="/create"
-                className="px-8 py-4 rounded-lg border-2 border-purple-500 hover:bg-purple-500/10 transition text-lg font-semibold"
+                className="px-8 py-4 rounded-xl bg-white/5 backdrop-blur-lg border border-white/10 text-white font-semibold text-lg hover:bg-white/10 transition"
               >
                 Launch Your Presale
               </Link>
             </div>
-            <p className="text-sm text-gray-500">
-              🔒 Instant USDC payments • Lightning-fast Solana network • No API keys required
-            </p>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid md:grid-cols-4 gap-6 mb-20">
+            <StatCard
+              icon={<TrendingUp className="w-8 h-8 text-green-400" />}
+              value="$2.5M+"
+              label="Total Raised"
+            />
+            <StatCard
+              icon={<Users className="w-8 h-8 text-blue-400" />}
+              value="15K+"
+              label="Investors"
+            />
+            <StatCard
+              icon={<Rocket className="w-8 h-8 text-purple-400" />}
+              value="240+"
+              label="Active Presales"
+            />
+            <StatCard
+              icon={<Award className="w-8 h-8 text-orange-400" />}
+              value="98%"
+              label="Success Rate"
+            />
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+      <section className="py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">
-            Why Choose x402 Presale on Solana?
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Why Choose <span className="gradient-text">QuantumRaise</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Built on Solana with cutting-edge quantum-inspired technology for the best presale experience
+            </p>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
-              icon={<Shield className="w-12 h-12 text-purple-400" />}
-              title="Secure Escrow"
-              description="Funds held securely in platform escrow on Solana using x402 protocol. Released only when conditions are met."
-            />
-            <FeatureCard
-              icon={<Zap className="w-12 h-12 text-yellow-400" />}
+              icon={<Zap className="w-12 h-12" />}
               title="Lightning Fast"
-              description="Powered by Solana's high-speed blockchain. Instant confirmations, minimal fees (~$0.00025 per transaction)."
+              description="400,000 TPS on Solana network ensures instant transactions and zero delays"
+              gradient="from-yellow-500 to-orange-500"
             />
             <FeatureCard
-              icon={<Lock className="w-12 h-12 text-green-400" />}
-              title="Transparent"
-              description="All transactions on-chain. Real-time tracking. Verify everything on Solscan explorer."
+              icon={<Shield className="w-12 h-12" />}
+              title="Secure Escrow"
+              description="x402 protocol guarantees funds are safe until presale goals are met"
+              gradient="from-green-500 to-emerald-500"
             />
             <FeatureCard
-              icon={<TrendingUp className="w-12 h-12 text-blue-400" />}
-              title="Milestone-Based"
-              description="Release funds in phases based on project milestones for added security and accountability."
+              icon={<Coins className="w-12 h-12" />}
+              title="Low Fees"
+              description="Pay only $0.001 per transaction with Solana's efficient infrastructure"
+              gradient="from-blue-500 to-cyan-500"
             />
             <FeatureCard
-              icon={<Users className="w-12 h-12 text-pink-400" />}
-              title="Fair Launch"
-              description="Equal opportunity for all investors with customizable limits per wallet. No pre-sales or insider advantages."
+              icon={<Lock className="w-12 h-12" />}
+              title="Smart Contracts"
+              description="Automated fund release based on transparent milestone completion"
+              gradient="from-purple-500 to-pink-500"
             />
             <FeatureCard
-              icon={<Rocket className="w-12 h-12 text-orange-400" />}
-              title="Easy Launch"
-              description="Launch your presale in minutes. Simple process, instant USDC payments via x402, no complex setup."
+              icon={<Globe className="w-12 h-12" />}
+              title="Global Access"
+              description="Anyone, anywhere can participate with just a Solana wallet"
+              gradient="from-indigo-500 to-blue-500"
+            />
+            <FeatureCard
+              icon={<TrendingUp className="w-12 h-12" />}
+              title="Fair Distribution"
+              description="Transparent automated distribution of tokens to all investors"
+              gradient="from-pink-500 to-rose-500"
             />
           </div>
-        </div>
-      </section>
-
-      {/* Solana Benefits */}
-      <section className="py-20 bg-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Built on Solana</h2>
-            <p className="text-xl text-gray-400">The fastest blockchain for your presale</p>
-          </div>
-          
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="p-6 rounded-xl bg-gradient-to-br from-purple-900/30 to-gray-800/50 border border-purple-500/30 text-center">
-              <div className="text-4xl font-bold text-purple-400 mb-2">~400ms</div>
-              <div className="text-gray-400">Block Time</div>
-            </div>
-            <div className="p-6 rounded-xl bg-gradient-to-br from-blue-900/30 to-gray-800/50 border border-blue-500/30 text-center">
-              <div className="text-4xl font-bold text-blue-400 mb-2">$0.00025</div>
-              <div className="text-gray-400">Transaction Fee</div>
-            </div>
-            <div className="p-6 rounded-xl bg-gradient-to-br from-green-900/30 to-gray-800/50 border border-green-500/30 text-center">
-              <div className="text-4xl font-bold text-green-400 mb-2">65,000+</div>
-              <div className="text-gray-400">TPS Capacity</div>
-            </div>
-            <div className="p-6 rounded-xl bg-gradient-to-br from-orange-900/30 to-gray-800/50 border border-orange-500/30 text-center">
-              <div className="text-4xl font-bold text-orange-400 mb-2">Instant</div>
-              <div className="text-gray-400">Settlement</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Presales */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-12">
-            <h2 className="text-4xl font-bold">Featured Presales</h2>
-            <Link href="/presales" className="text-purple-400 hover:text-purple-300">
-              View All →
-            </Link>
-          </div>
-          
-          {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="spinner"></div>
-            </div>
-          ) : featuredPresales.length > 0 ? (
-            <div className="grid md:grid-cols-3 gap-8">
-              {featuredPresales.map((presale) => (
-                <PresaleCard key={presale.id} presale={presale} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20 text-gray-400">
-              <p className="text-xl">No featured presales at the moment</p>
-              <Link
-                href="/create"
-                className="inline-block mt-4 text-purple-400 hover:text-purple-300"
-              >
-                Be the first to launch →
-              </Link>
-            </div>
-          )}
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-black">
+      <section className="py-20 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            <StepCard
-              number="1"
-              title="Create Presale"
-              description="Define your project, tokenomics, and funding goals. Pay $100 USDC via x402."
-            />
-            <StepCard
-              number="2"
-              title="Get Approved"
-              description="Quick review to ensure quality and legitimacy. Usually within 24 hours."
-            />
-            <StepCard
-              number="3"
-              title="Raise Funds"
-              description="Investors contribute USDC via x402 payments directly to Solana escrow."
-            />
-            <StepCard
-              number="4"
-              title="Launch Token"
-              description="Meet milestones to unlock escrowed funds. Fast, secure, transparent."
-            />
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              How It <span className="gradient-text">Works</span>
+            </h2>
+            <p className="text-xl text-gray-400">Simple, transparent, and secure</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* For Investors */}
+            <div className="glass-effect rounded-2xl p-8">
+              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <Users className="w-8 h-8 text-blue-400" />
+                For Investors
+              </h3>
+              <div className="space-y-4">
+                <Step number="1" text="Connect your Solana wallet (Phantom, Solflare, etc.)" />
+                <Step number="2" text="Browse active presales and research projects" />
+                <Step number="3" text="Invest USDC with x402 secure payment" />
+                <Step number="4" text="Receive tokens automatically when presale succeeds" />
+              </div>
+            </div>
+
+            {/* For Developers */}
+            <div className="glass-effect rounded-2xl p-8">
+              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <Rocket className="w-8 h-8 text-purple-400" />
+                For Developers
+              </h3>
+              <div className="space-y-4">
+                <Step number="1" text="Connect wallet and create presale campaign" />
+                <Step number="2" text="Define goals, tokenomics, and milestones" />
+                <Step number="3" text="Pay creation fee ($10 USDC) via x402" />
+                <Step number="4" text="Receive funds when milestones are achieved" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-purple-900/20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to Launch on Solana?</h2>
-          <p className="text-xl text-gray-400 mb-8">
-            Join the future of token presales with transparent, secure escrow and instant payments
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-pink-600/20"></div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6">
+            Ready to Launch Your <span className="gradient-text">Presale</span>?
+          </h2>
+          <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+            Join hundreds of successful projects raising funds on the most secure presale platform on Solana
           </p>
-          <Link
-            href="/create"
-            className="inline-block px-12 py-4 rounded-lg gradient-bg hover:opacity-90 transition text-xl font-semibold"
-          >
-            Launch Your Presale Now
-          </Link>
-          <p className="mt-6 text-sm text-gray-500">
-            ⚡ Built on Solana • Secured by x402 • No API keys needed
-          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/create"
+              className="px-10 py-5 rounded-xl gradient-bg text-white font-bold text-xl hover:opacity-90 transition btn-glow"
+            >
+              Create Presale Now
+            </Link>
+            <Link
+              href="/presales"
+              className="px-10 py-5 rounded-xl bg-white/5 backdrop-blur-lg border border-white/10 text-white font-bold text-xl hover:bg-white/10 transition"
+            >
+              Explore Opportunities
+            </Link>
+          </div>
         </div>
       </section>
     </div>
   );
 }
 
-function FeatureCard({ icon, title, description }: {
+function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
+  return (
+    <div className="glass-effect rounded-2xl p-6 text-center card-hover">
+      <div className="flex justify-center mb-3">{icon}</div>
+      <div className="text-3xl font-bold mb-1">{value}</div>
+      <div className="text-gray-400 text-sm">{label}</div>
+    </div>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+  gradient,
+}: {
   icon: React.ReactNode;
   title: string;
   description: string;
+  gradient: string;
 }) {
   return (
-    <div className="p-6 rounded-xl bg-gray-800/50 border border-gray-700 card-hover">
-      <div className="mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-400">{description}</p>
+    <div className="glass-effect rounded-2xl p-8 card-hover group">
+      <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition`}>
+        <div className="text-white">{icon}</div>
+      </div>
+      <h3 className="text-2xl font-bold mb-3">{title}</h3>
+      <p className="text-gray-400 leading-relaxed">{description}</p>
     </div>
   );
 }
 
-function StepCard({ number, title, description }: {
-  number: string;
-  title: string;
-  description: string;
-}) {
+function Step({ number, text }: { number: string; text: string }) {
   return (
-    <div className="text-center">
-      <div className="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+    <div className="flex items-start gap-4">
+      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center font-bold text-sm">
         {number}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-400">{description}</p>
+      <p className="text-gray-300 pt-1">{text}</p>
     </div>
-  );
-}
-
-function PresaleCard({ presale }: { presale: Presale }) {
-  const progress = (presale.currentRaised / presale.hardCap) * 100;
-  const daysLeft = Math.ceil(
-    (new Date(presale.endDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-  );
-
-  return (
-    <Link href={`/presales/${presale.id}`}>
-      <div className="p-6 rounded-xl bg-gray-800/50 border border-gray-700 card-hover cursor-pointer">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <h3 className="text-2xl font-bold">{presale.projectName}</h3>
-            <p className="text-purple-400">${presale.ticker}</p>
-          </div>
-          {presale.featured && (
-            <span className="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-sm">
-              Featured
-            </span>
-          )}
-        </div>
-        
-        <p className="text-gray-400 mb-4 line-clamp-2">{presale.description}</p>
-        
-        <div className="space-y-3">
-          <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-400">Progress</span>
-              <span className="font-semibold">{progress.toFixed(1)}%</span>
-            </div>
-            <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-              <div
-                className="h-full gradient-bg progress-animated"
-                style={{ width: `${Math.min(progress, 100)}%` }}
-              ></div>
-            </div>
-          </div>
-          
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Raised</span>
-            <span className="font-semibold">
-              ${presale.currentRaised.toLocaleString()} / ${presale.hardCap.toLocaleString()}
-            </span>
-          </div>
-          
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-400">Ends In</span>
-            <span className="font-semibold text-orange-400">
-              {daysLeft > 0 ? `${daysLeft} days` : 'Ended'}
-            </span>
-          </div>
-        </div>
-      </div>
-    </Link>
   );
 }

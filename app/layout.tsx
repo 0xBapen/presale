@@ -5,8 +5,8 @@ import { NavBar } from "./components/NavBar";
 import { ToastContainer } from "./components/Toast";
 
 export const metadata: Metadata = {
-  title: "x402 Presale Platform - Decentralized Token Presales on Solana",
-  description: "Launch and invest in token presales with secure x402 escrow on Solana",
+  title: "QuantumRaise - Secure Token Presale Platform on Solana",
+  description: "Launch and invest in token presales with secure x402 escrow integration. Built on Solana for fast, transparent, and safe fundraising.",
 };
 
 export default function RootLayout({
