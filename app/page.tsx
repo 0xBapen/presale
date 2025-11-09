@@ -2,8 +2,64 @@
 
 import Link from 'next/link';
 import { Zap, Shield, Coins, TrendingUp, Users, Lock, Rocket, Globe, ChevronRight, Star, Award } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+interface Stats {
+  totalRaised: number;
+  investors: number;
+  activePresales: number;
+  successRate: number;
+}
 
 export default function HomePage() {
+  const [stats, setStats] = useState<Stats>({
+    totalRaised: 0,
+    investors: 0,
+    activePresales: 0,
+    successRate: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchStats();
+    // Refresh stats every 30 seconds
+    const interval = setInterval(fetchStats, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch('/api/stats', {
+        cache: 'no-store',
+      });
+      const data = await response.json();
+      setStats(data);
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatCurrency = (value: number) => {
+    if (value >= 1000000) {
+      return `$${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `$${(value / 1000).toFixed(1)}K`;
+    } else {
+      return `$${value.toFixed(0)}`;
+    }
+  };
+
+  const formatNumber = (value: number) => {
+    if (value >= 1000000) {
+      return `${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `${(value / 1000).toFixed(1)}K`;
+    } else {
+      return value.toString();
+    }
+  };
   return (
     <div className="min-h-screen bg-black relative">
       {/* Hero Section - Nexchain Style */}
@@ -62,23 +118,27 @@ export default function HomePage() {
           <div className="grid md:grid-cols-4 gap-6 mb-20">
             <StatCard
               icon={<TrendingUp className="w-8 h-8 text-green-400" />}
-              value="$2.5M+"
+              value={loading ? "Loading..." : formatCurrency(stats.totalRaised)}
               label="Total Raised"
+              loading={loading}
             />
             <StatCard
               icon={<Users className="w-8 h-8 text-blue-400" />}
-              value="15K+"
+              value={loading ? "Loading..." : formatNumber(stats.investors)}
               label="Investors"
+              loading={loading}
             />
             <StatCard
               icon={<Rocket className="w-8 h-8 text-purple-400" />}
-              value="240+"
+              value={loading ? "Loading..." : stats.activePresales.toString()}
               label="Active Presales"
+              loading={loading}
             />
             <StatCard
               icon={<Award className="w-8 h-8 text-orange-400" />}
-              value="98%"
+              value={loading ? "Loading..." : `${stats.successRate}%`}
               label="Success Rate"
+              loading={loading}
             />
           </div>
         </div>
@@ -209,11 +269,23 @@ export default function HomePage() {
   );
 }
 
-function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
+function StatCard({ 
+  icon, 
+  value, 
+  label, 
+  loading 
+}: { 
+  icon: React.ReactNode; 
+  value: string; 
+  label: string;
+  loading?: boolean;
+}) {
   return (
     <div className="glass-effect rounded-2xl p-6 text-center card-hover">
       <div className="flex justify-center mb-3">{icon}</div>
-      <div className="text-3xl font-bold mb-1">{value}</div>
+      <div className={`text-3xl font-bold mb-1 ${loading ? 'animate-pulse' : ''}`}>
+        {value}
+      </div>
       <div className="text-gray-400 text-sm">{label}</div>
     </div>
   );
