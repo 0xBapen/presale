@@ -29,7 +29,7 @@ export default function HomePage() {
             </div>
             
             <h1 className="text-6xl md:text-7xl font-bold mb-6">
-              <span className="gradient-text">QuantumRaise</span>
+              <span className="gradient-text">Orbitalx402</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto">
@@ -89,7 +89,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Why Choose <span className="gradient-text">QuantumRaise</span>
+              Why Choose <span className="gradient-text">Orbitalx402</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Built on Solana with cutting-edge quantum-inspired technology for the best presale experience

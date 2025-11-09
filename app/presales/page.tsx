@@ -68,7 +68,7 @@ export default function PresalesPage() {
               Discover <span className="gradient-text">Top Presales</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Invest early in promising projects with secure x402 escrow on Solana
+              Invest early in promising projects with secure escrow on Orbitalx402
             </p>
           </div>
         </div>

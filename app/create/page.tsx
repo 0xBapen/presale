@@ -222,7 +222,7 @@ export default function CreatePresalePage() {
             Launch Your <span className="gradient-text">Presale</span>
           </h1>
           <p className="text-gray-400 mb-4">
-            Create a token presale with secure x402 escrow on QuantumRaise
+            Create a token presale with secure x402 escrow on Orbitalx402
           </p>
           
           {/* Creation Fee Notice */}

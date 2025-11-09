@@ -27,7 +27,7 @@ export function NavBar() {
               </div>
               <div>
                 <div className="text-2xl font-bold gradient-text tracking-tight">
-                  QuantumRaise
+                Orbitalx402
                 </div>
                 <div className="text-xs text-gray-400 -mt-0.5">Secure Presale Platform</div>
               </div>
