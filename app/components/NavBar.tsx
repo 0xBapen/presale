@@ -20,7 +20,7 @@ export function NavBar() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative w-12 h-12 flex items-center justify-center group-hover:scale-110 transition">
                 <img 
-                  src="/images/logo-icon.jpg" 
+                  src="/images/logo-icon.png" 
                   alt="QuantumRaise"
                   className="w-full h-full object-contain"
                 />
