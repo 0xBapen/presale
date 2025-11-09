@@ -17,7 +17,7 @@ export default function HomePage() {
             {/* Logo Banner */}
             <div className="mb-8">
               <img 
-                src="/images/logo-banner.jpg" 
+                src="/images/logo-banner.png" 
                 alt="QuantumRaise"
                 className="mx-auto h-24 object-contain"
               />
