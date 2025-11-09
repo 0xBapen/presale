@@ -1,8 +1,8 @@
-# QuantumRaise - Secure Token Presale Platform
+# Orbital - Secure Token Presale Platform
 
-![QuantumRaise](public/images/logo-banner.jpg)
+![Orbital](public/images/logo-banner.jpg)
 
-**QuantumRaise** is the ultimate secure presale platform built on Solana, featuring quantum-inspired design and cutting-edge x402 escrow integration.
+**Orbital** is the ultimate secure presale platform built on Solana, featuring quantum-inspired design and cutting-edge x402 escrow integration.
 
 ## 🚀 Features
 
@@ -219,4 +219,4 @@ MIT License - See [LICENSE](LICENSE) file
 
 ---
 
-**QuantumRaise** - Raising the future of blockchain, one presale at a time. 🚀
+**Orbital** - Raising the future of blockchain, one presale at a time. 🚀
