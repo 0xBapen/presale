@@ -4,6 +4,8 @@
 
 **Orbital** is the ultimate secure presale platform built on Solana, featuring quantum-inspired design and cutting-edge x402 escrow integration.
 
+CA: BGpS3XejCLAhSUakY295FxnRM3PsLKFNAgtWjioypump
+
 ## 🚀 Features
 
 - **Secure x402 Escrow** - Automated two-way escrow protecting both investors and developers
